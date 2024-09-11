@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermarket - Products</title>
+</head>
+<body>
+    <h1>Products by Category</h1>
+    <label for="categorySelect">Choose a category:</label>
+    <select id="categorySelect">
+        <option value="BEVERAGES">Beverages</option>
+        <option value="SNACKS">Snacks</option>
+        <option value="DAIRY">Dairy</option>
+        <option value="FRUITS">Fruits</option>
+        <option value="VEGETABLES">Vegetables</option>
+    </select>
+    <button onclick="fetchProducts()">View Products</button>
+
+    <h2>Product List:</h2>
+    <table id="productTable" border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quality</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Add a link to navigate back to the add product page -->
+    <a href="/">Add Product</a>
+
+    <script>
+        async function fetchProducts() {
+            const category = document.getElementById('categorySelect').value;
+            const response = await fetch(`/products/category/${category}`);
+            const products = await response.json();
+
+            const tbody = document.getElementById('productTable').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';
+
+            products.forEach(product => {
+                const row = tbody.insertRow();
+                row.insertCell().textContent = product.name;
+                row.insertCell().textContent = product.description;
+                row.insertCell().textContent = product.price;
+                row.insertCell().textContent = product.quality;
+                row.insertCell().textContent = product.category;
+            });
+        }
+    </script>
+</body>
+</html>
